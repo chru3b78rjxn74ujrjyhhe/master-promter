@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Loader2, Sparkles, Feather, Plus, X } from "lucide-react";
+import { Loader2, Feather, Plus, X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -282,12 +282,12 @@ export default function MasterPrompter() {
         {/* Hero */}
         <section className="mb-14 md:mb-20" data-testid="hero-section">
           <div className="mp-eyebrow mb-5">A Studio for Prompt Craft</div>
-          <h1 className="font-heading text-[2.6rem] sm:text-5xl lg:text-[3.4rem] leading-[1.05] tracking-tight text-parchment text-balance">
+          <h1 className="mp-h1 text-balance">
             Turn a rough idea into a{" "}
             <span className="italic text-gold">perfectly engineered</span>{" "}
             prompt.
           </h1>
-          <p className="mt-6 max-w-[58ch] text-parchment/65 leading-relaxed font-body">
+          <p className="mt-6 max-w-[58ch] text-parchment/70 leading-relaxed font-body text-[1.02rem]">
             Describe what you want, choose the target AI and tone, and receive
             a crafted prompt with three pro tips and two variations — tuned for
             the tool you're using.
@@ -467,7 +467,7 @@ export default function MasterPrompter() {
                 </>
               ) : (
                 <>
-                  <Sparkles size={16} />
+                  <span aria-hidden="true" style={{ fontSize: "1rem", lineHeight: 1 }}>⚡</span>
                   <span>Generate Prompt</span>
                 </>
               )}

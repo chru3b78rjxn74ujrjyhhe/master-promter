@@ -72,11 +72,11 @@ export default function SharedPrompt() {
           <div className="flex flex-col gap-10" data-testid="shared-result">
             <section className="flex flex-col gap-3">
               <div className="mp-eyebrow">A shared prompt</div>
-              <h1 className="font-heading text-3xl sm:text-4xl tracking-tight text-parchment text-balance">
+              <h1 className="mp-h1 text-balance">
                 Engineered for{" "}
                 <span className="italic text-gold">{result.target_ai}</span>
               </h1>
-              <p className="text-parchment/60 font-body leading-relaxed max-w-[60ch]">
+              <p className="text-parchment/65 font-body leading-relaxed max-w-[60ch] text-[1.02rem]">
                 Original idea: <span className="italic">{result.idea}</span>
               </p>
               <div className="flex items-center gap-2 flex-wrap mt-2">

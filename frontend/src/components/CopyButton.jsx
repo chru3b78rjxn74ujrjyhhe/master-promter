@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { toast } from "sonner";
 
 export function CopyButton({ text, label = "Copy", testId }) {
@@ -22,9 +22,15 @@ export function CopyButton({ text, label = "Copy", testId }) {
       onClick={handle}
       data-testid={testId}
       className="mp-btn-ghost"
-      aria-label={label}
+      aria-label={label || "Copy"}
     >
-      {copied ? <Check size={14} /> : <Copy size={14} />}
+      {copied ? (
+        <Check size={14} />
+      ) : (
+        <span aria-hidden="true" style={{ fontSize: "0.9rem", lineHeight: 1 }}>
+          📋
+        </span>
+      )}
       <span>{copied ? "Copied" : label}</span>
     </button>
   );

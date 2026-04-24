@@ -63,7 +63,8 @@ module.exports = {
             },
             fontFamily: {
                 heading: ['"Playfair Display"', 'ui-serif', 'Georgia', 'serif'],
-                body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                display: ['"DM Serif Display"', '"Playfair Display"', 'ui-serif', 'Georgia', 'serif'],
+                body: ['Lora', 'ui-serif', 'Georgia', 'serif'],
                 mono: ['"DM Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
             },
             keyframes: {

@@ -22,9 +22,12 @@ export default function PromptResult({
 
       {/* IV. The Engineered Prompt */}
       <section className="flex flex-col gap-5">
-        <div className="mp-section-label">
-          <span className="num">IV.</span>
-          <span className="title">The Engineered Prompt</span>
+        <div className="flex flex-col gap-2">
+          <div className="mp-eyebrow">Atelier No. IV</div>
+          <h2 className="mp-h2 font-display italic">
+            <span aria-hidden="true" className="not-italic mr-2 text-gold">✦</span>
+            The Engineered Prompt
+          </h2>
         </div>
 
         <div className="flex items-center justify-between flex-wrap gap-3">

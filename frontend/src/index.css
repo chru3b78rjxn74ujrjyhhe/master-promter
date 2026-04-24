@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -37,7 +37,9 @@
     html, body {
         background-color: #080810;
         color: #EDE8F5;
-        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        font-family: 'Lora', ui-serif, Georgia, serif;
+        font-size: 1rem;
+        line-height: 1.7;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
@@ -49,6 +51,53 @@
 }
 
 @layer components {
+    /* Typography primitives */
+    .mp-h1 {
+        font-family: 'Playfair Display', ui-serif, Georgia, serif;
+        font-weight: 800;
+        font-size: clamp(2.6rem, 5.2vw, 3.6rem);
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+        color: #EDE8F5;
+    }
+
+    .mp-h1::before {
+        content: "✦";
+        display: inline-block;
+        margin-right: 0.55rem;
+        color: #C9A84C;
+        font-size: 0.72em;
+        vertical-align: 0.14em;
+        font-weight: 500;
+    }
+
+    .mp-h2 {
+        font-family: 'DM Serif Display', 'Playfair Display', ui-serif, Georgia, serif;
+        font-weight: 400;
+        font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+        line-height: 1.2;
+        letter-spacing: 0.002em;
+        color: #9D6FE8;
+        padding-left: 0.9rem;
+        border-left: 2px solid #C9A84C;
+    }
+
+    .mp-label {
+        font-family: 'DM Mono', ui-monospace, monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.28em;
+        font-size: 0.72rem;
+        color: rgba(237, 232, 245, 0.55);
+        font-weight: 400;
+    }
+
+    .mp-body {
+        font-family: 'Lora', ui-serif, Georgia, serif;
+        font-size: 1rem;
+        line-height: 1.75;
+        color: rgba(237, 232, 245, 0.8);
+    }
+
     /* Page ambient layers */
     .mp-bg {
         position: fixed;
@@ -129,8 +178,8 @@
     }
 
     .mp-eyebrow {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.72rem;
+        font-family: 'DM Mono', ui-monospace, monospace;
+        font-size: 0.7rem;
         letter-spacing: 0.32em;
         text-transform: uppercase;
         color: rgba(201, 168, 76, 0.85);
@@ -149,7 +198,7 @@
         border-radius: 9999px;
         background: linear-gradient(180deg, #7a4ad6 0%, #6C3FC5 60%, #5a32ab 100%);
         color: #EDE8F5;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Lora', ui-serif, Georgia, serif;
         font-weight: 500;
         letter-spacing: 0.04em;
         border: 1px solid rgba(201, 168, 76, 0.25);
@@ -211,7 +260,9 @@
         border: 1px solid rgba(157, 111, 232, 0.28);
         border-radius: 12px;
         color: #EDE8F5;
-        font-family: 'Inter', sans-serif;
+        font-family: 'Lora', ui-serif, Georgia, serif;
+        font-size: 1rem;
+        line-height: 1.7;
         padding: 0.9rem 1rem;
         width: 100%;
         transition: border-color 250ms ease, box-shadow 250ms ease, background 250ms ease;
@@ -307,8 +358,8 @@
         border: 1px solid rgba(201, 168, 76, 0.35);
         background: rgba(201, 168, 76, 0.06);
         color: #C9A84C;
-        font-family: 'Inter', sans-serif;
-        font-size: 0.72rem;
+        font-family: 'DM Mono', ui-monospace, monospace;
+        font-size: 0.7rem;
         letter-spacing: 0.18em;
         text-transform: uppercase;
     }

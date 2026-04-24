@@ -21,7 +21,7 @@ function ThemedToaster() {
             ? "1px solid rgba(201, 168, 76, 0.35)"
             : "1px solid rgba(138, 104, 32, 0.5)",
           color: isDark ? "#EDE8F5" : "#1a1628",
-          fontFamily: "Inter, sans-serif",
+          fontFamily: "Lora, ui-serif, Georgia, serif",
           borderRadius: "9999px",
           padding: "0.6rem 1.1rem",
           fontSize: "0.85rem",

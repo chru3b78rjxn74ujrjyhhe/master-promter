@@ -1,8 +1,17 @@
 import { CopyButton } from "@/components/CopyButton";
-import { Heart, Download } from "lucide-react";
+import { Heart, Download, Share2, ThumbsUp, ThumbsDown } from "lucide-react";
 
-export default function PromptResult({ result, onSaveFavorite, onExport, isFavorited }) {
+export default function PromptResult({
+  result,
+  onSaveFavorite,
+  onExport,
+  onShare,
+  onRate,
+  isFavorited,
+}) {
   if (!result) return null;
+
+  const rating = result.rating || 0;
 
   return (
     <div
@@ -23,7 +32,44 @@ export default function PromptResult({ result, onSaveFavorite, onExport, isFavor
             <span className="mp-chip">{result.target_ai}</span>
             <span className="mp-chip">{result.style}</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              type="button"
+              onClick={() => onRate && onRate(rating === 1 ? 0 : 1)}
+              className="mp-btn-ghost"
+              data-testid="rate-up-btn"
+              aria-label="Thumbs up"
+              aria-pressed={rating === 1}
+            >
+              <ThumbsUp
+                size={14}
+                fill={rating === 1 ? "#C9A84C" : "none"}
+                stroke={rating === 1 ? "#C9A84C" : "currentColor"}
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() => onRate && onRate(rating === -1 ? 0 : -1)}
+              className="mp-btn-ghost"
+              data-testid="rate-down-btn"
+              aria-label="Thumbs down"
+              aria-pressed={rating === -1}
+            >
+              <ThumbsDown
+                size={14}
+                fill={rating === -1 ? "#C9A84C" : "none"}
+                stroke={rating === -1 ? "#C9A84C" : "currentColor"}
+              />
+            </button>
+            <button
+              type="button"
+              onClick={onShare}
+              className="mp-btn-ghost"
+              data-testid="share-btn"
+            >
+              <Share2 size={14} />
+              <span>Share</span>
+            </button>
             <button
               type="button"
               onClick={onSaveFavorite}

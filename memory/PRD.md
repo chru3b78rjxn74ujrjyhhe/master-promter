@@ -52,12 +52,17 @@ Detailed & Technical, Creative & Expressive, Concise & Direct, Step-by-Step, Sto
 - Export current prompt as JSON
 - 100% green backend tests (11/11 iteration_1.json)
 
+## Implemented — Feature pass 2 (2026-02)
+- **Prompt rating**: thumbs up / thumbs down on every generated prompt; persisted on the history record via `PATCH /api/history/{id}/rating`; toggle-off supported
+- **Share via link**: public read-only `/share/:id` route backed by `GET /api/shared/{id}` (looks up in history or favorites); "Share" button copies the link
+- **Custom AI tool**: "+ Custom" toggle reveals an inline input; custom targets persist in localStorage and appear in the Target AI select under a gold divider, with "Remove custom" action when selected
+- **Dark/Light theme toggle**: luxury parchment/daylight light mode preserving purple+gold accents, toggle in header persisted in localStorage, sonner toaster adapts to theme
+
 ## Backlog
-- **P1**: Share public read-only link for a generated prompt
 - **P1**: Tag / rename favorites
-- **P2**: Dark-only visual toggle for result box (plain text view)
-- **P2**: Keyboard shortcut ⌘↵ to generate
 - **P2**: Regenerate variations only (without regenerating main prompt)
+- **P2**: Keyboard shortcut ⌘↵ to generate
+- **P2**: Public prompt marketplace (gallery of opted-in favorites)
 - **P3**: Per-target-AI prompt templates / presets
 
 ## Next Tasks

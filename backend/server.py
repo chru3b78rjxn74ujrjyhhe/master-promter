@@ -50,7 +50,12 @@ class PromptResult(BaseModel):
     prompt: str
     tips: List[str]
     variations: List[str]
+    rating: int = 0  # -1 = thumbs down, 0 = none, 1 = thumbs up
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+class RatingUpdate(BaseModel):
+    rating: int  # -1, 0, or 1
 
 
 class FavoriteCreate(BaseModel):
@@ -217,6 +222,34 @@ async def delete_favorite(item_id: str):
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Not found")
     return {"ok": True}
+
+
+@api_router.patch("/history/{item_id}/rating", response_model=PromptResult)
+async def rate_history(item_id: str, payload: RatingUpdate):
+    if payload.rating not in (-1, 0, 1):
+        raise HTTPException(status_code=400, detail="rating must be -1, 0, or 1")
+    result = await db.history.find_one_and_update(
+        {"id": item_id},
+        {"$set": {"rating": payload.rating}},
+        projection={"_id": 0},
+        return_document=True,
+    )
+    if not result:
+        raise HTTPException(status_code=404, detail="Not found")
+    return result
+
+
+@api_router.get("/shared/{item_id}", response_model=PromptResult)
+async def get_shared(item_id: str):
+    # Search history first, then favorites
+    item = await db.history.find_one({"id": item_id}, {"_id": 0})
+    if not item:
+        item = await db.favorites.find_one({"id": item_id}, {"_id": 0})
+    if not item:
+        raise HTTPException(status_code=404, detail="Not found")
+    # Ensure rating field exists for older records
+    item.setdefault("rating", 0)
+    return item
 
 
 # Include the router in the main app

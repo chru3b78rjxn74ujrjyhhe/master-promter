@@ -1,20 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Loader2, Sparkles, Feather } from "lucide-react";
+import { Loader2, Sparkles, Feather, Plus, X } from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectSeparator,
 } from "@/components/ui/select";
 import PromptResult from "@/components/PromptResult";
 import { HistoryPanel, FavoritesPanel } from "@/components/SidePanels";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { TARGET_AIS, PROMPT_STYLES } from "@/lib/constants";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+const CUSTOM_AI_KEY = "mp-custom-ais";
 
 export default function MasterPrompter() {
   const [idea, setIdea] = useState("");
@@ -25,6 +28,22 @@ export default function MasterPrompter() {
 
   const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
+
+  // Custom AI tools persisted to localStorage
+  const [customAis, setCustomAis] = useState(() => {
+    try {
+      const raw = localStorage.getItem(CUSTOM_AI_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [showCustomInput, setShowCustomInput] = useState(false);
+  const [customInputValue, setCustomInputValue] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem(CUSTOM_AI_KEY, JSON.stringify(customAis));
+  }, [customAis]);
 
   const favoriteKey = useMemo(() => {
     if (!result) return null;
@@ -173,6 +192,58 @@ export default function MasterPrompter() {
     }
   };
 
+  const handleRate = async (newRating) => {
+    if (!result) return;
+    try {
+      const r = await axios.patch(`${API}/history/${result.id}/rating`, {
+        rating: newRating,
+      });
+      setResult(r.data);
+      fetchHistory();
+      if (newRating === 1) toast.success("Marked as helpful");
+      else if (newRating === -1) toast.success("Feedback saved");
+      else toast.success("Rating cleared");
+    } catch {
+      toast.error("Could not save rating");
+    }
+  };
+
+  const handleShare = async () => {
+    if (!result) return;
+    const url = `${window.location.origin}/share/${result.id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Share link copied");
+    } catch {
+      toast.error("Could not copy link");
+    }
+  };
+
+  const addCustomAi = () => {
+    const name = customInputValue.trim();
+    if (!name) {
+      toast.error("Enter a name");
+      return;
+    }
+    const exists =
+      TARGET_AIS.some((t) => t.value === name) ||
+      customAis.includes(name);
+    if (exists) {
+      toast.error("Already in the list");
+      return;
+    }
+    setCustomAis((prev) => [...prev, name]);
+    setTargetAi(name);
+    setCustomInputValue("");
+    setShowCustomInput(false);
+    toast.success(`Added ${name}`);
+  };
+
+  const removeCustomAi = (name) => {
+    setCustomAis((prev) => prev.filter((n) => n !== name));
+    if (targetAi === name) setTargetAi("ChatGPT");
+  };
+
   return (
     <main className="relative z-10 min-h-screen">
       <div className="max-w-[820px] mx-auto px-6 md:px-8 pt-10 md:pt-16 pb-24">
@@ -193,6 +264,7 @@ export default function MasterPrompter() {
           </div>
 
           <nav className="flex items-center gap-2">
+            <ThemeToggle />
             <FavoritesPanel
               items={favorites}
               onLoad={loadFromEntry}
@@ -250,29 +322,95 @@ export default function MasterPrompter() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-2">
-                <label className="text-[0.7rem] tracking-[0.28em] uppercase text-parchment/55 font-body">
-                  Target AI
-                </label>
-                <Select value={targetAi} onValueChange={setTargetAi}>
-                  <SelectTrigger
-                    className="mp-select-trigger"
-                    data-testid="target-ai-select"
+                <div className="flex items-center justify-between">
+                  <label className="text-[0.7rem] tracking-[0.28em] uppercase text-parchment/55 font-body">
+                    Target AI
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowCustomInput((v) => !v)}
+                    className="text-[0.62rem] tracking-[0.2em] uppercase text-gold/80 hover:text-gold flex items-center gap-1 transition-colors"
+                    data-testid="toggle-custom-ai-btn"
                   >
-                    <SelectValue placeholder="Choose target AI" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#0a0a14] border-[#9D6FE8]/30 text-parchment">
-                    {TARGET_AIS.map((opt) => (
-                      <SelectItem
-                        key={opt.value}
-                        value={opt.value}
-                        className="focus:bg-[#6C3FC5]/20 focus:text-parchment"
-                        data-testid={`target-ai-option-${opt.value}`}
-                      >
-                        {opt.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    {showCustomInput ? <X size={11} /> : <Plus size={11} />}
+                    {showCustomInput ? "Cancel" : "Custom"}
+                  </button>
+                </div>
+                {showCustomInput ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={customInputValue}
+                      onChange={(e) => setCustomInputValue(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") addCustomAi();
+                      }}
+                      placeholder="e.g. Perplexity, Grok…"
+                      className="mp-input font-body"
+                      autoFocus
+                      data-testid="custom-ai-input"
+                    />
+                    <button
+                      type="button"
+                      onClick={addCustomAi}
+                      className="mp-btn-ghost"
+                      data-testid="custom-ai-add-btn"
+                    >
+                      Add
+                    </button>
+                  </div>
+                ) : (
+                  <Select value={targetAi} onValueChange={setTargetAi}>
+                    <SelectTrigger
+                      className="mp-select-trigger"
+                      data-testid="target-ai-select"
+                    >
+                      <SelectValue placeholder="Choose target AI" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#0a0a14] border-[#9D6FE8]/30 text-parchment">
+                      {TARGET_AIS.map((opt) => (
+                        <SelectItem
+                          key={opt.value}
+                          value={opt.value}
+                          className="focus:bg-[#6C3FC5]/20 focus:text-parchment"
+                          data-testid={`target-ai-option-${opt.value}`}
+                        >
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                      {customAis.length > 0 && (
+                        <>
+                          <SelectSeparator className="bg-gold/30" />
+                          {customAis.map((name) => (
+                            <SelectItem
+                              key={name}
+                              value={name}
+                              className="focus:bg-[#6C3FC5]/20 focus:text-parchment"
+                              data-testid={`target-ai-option-${name}`}
+                            >
+                              <span className="flex items-center gap-2">
+                                <span className="text-gold/80 text-[0.65rem] tracking-[0.2em] uppercase">
+                                  Custom
+                                </span>
+                                {name}
+                              </span>
+                            </SelectItem>
+                          ))}
+                        </>
+                      )}
+                    </SelectContent>
+                  </Select>
+                )}
+                {!showCustomInput && customAis.includes(targetAi) && (
+                  <button
+                    type="button"
+                    onClick={() => removeCustomAi(targetAi)}
+                    className="self-start text-[0.62rem] tracking-[0.2em] uppercase text-parchment/50 hover:text-gold flex items-center gap-1 transition-colors mt-1"
+                    data-testid="remove-custom-ai-btn"
+                  >
+                    <X size={10} /> Remove custom
+                  </button>
+                )}
               </div>
 
               <div className="flex flex-col gap-2">
@@ -347,6 +485,8 @@ export default function MasterPrompter() {
               result={result}
               onSaveFavorite={handleSaveFavorite}
               onExport={handleExport}
+              onShare={handleShare}
+              onRate={handleRate}
               isFavorited={isFavorited}
             />
           </div>

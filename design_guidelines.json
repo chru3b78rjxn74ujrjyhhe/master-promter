@@ -1,0 +1,67 @@
+{
+  "theme": "dark",
+  "archetype": "Jewel & Luxury",
+  "typography": {
+    "font_families": {
+      "heading": "Playfair Display, serif",
+      "body": "Inter, sans-serif",
+      "mono": "DM Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-4xl sm:text-5xl tracking-tight font-heading text-[#EDE8F5]",
+      "h2": "text-2xl sm:text-3xl tracking-tight font-heading text-[#EDE8F5]",
+      "h3": "text-xl sm:text-2xl tracking-tight font-heading text-[#EDE8F5]",
+      "body": "text-base font-body text-[#EDE8F5]/80",
+      "mono": "text-sm sm:text-base font-mono text-[#EDE8F5]",
+      "label": "text-sm tracking-[0.2em] uppercase font-heading text-[#C9A84C]"
+    }
+  },
+  "colors": {
+    "background": "#080810",
+    "primary": "#6C3FC5",
+    "accent": "#9D6FE8",
+    "highlight": "#C9A84C",
+    "text_main": "#EDE8F5",
+    "text_muted": "rgba(237, 232, 245, 0.7)",
+    "surface": "rgba(108, 63, 197, 0.05)",
+    "surface_lighter": "rgba(108, 63, 197, 0.1)",
+    "border": "rgba(157, 111, 232, 0.2)"
+  },
+  "layout": {
+    "container": "max-w-[820px] mx-auto px-6 py-16 md:py-24",
+    "spacing": "flex flex-col gap-12",
+    "structure": "Single centered page, elegant vertical flow, generous padding."
+  },
+  "surfaces": {
+    "main_card": "bg-[#080810]/60 backdrop-blur-xl border border-[#9D6FE8]/20 hover:border-[#9D6FE8]/40 hover:shadow-[0_0_30px_rgba(157,111,232,0.15)] transition-all duration-500 rounded-2xl p-8 md:p-12",
+    "input_box": "bg-[#080810] border border-[#9D6FE8]/30 focus:border-[#9D6FE8] focus:shadow-[0_0_15px_rgba(157,111,232,0.3)] transition-all rounded-lg p-4 w-full text-[#EDE8F5] resize-none",
+    "result_box": "bg-[#0a0a14] border border-[#9D6FE8]/20 relative overflow-hidden rounded-xl p-6"
+  },
+  "components": {
+    "button_primary": "bg-[#6C3FC5] text-[#EDE8F5] rounded-full px-8 py-3 font-body font-medium hover:bg-[#7b48e0] relative overflow-hidden group transition-all w-full md:w-auto flex justify-center items-center",
+    "button_shimmer": "absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#C9A84C]/30 to-transparent group-hover:animate-[shimmer_1.5s_infinite]",
+    "separator": "h-[1px] w-full bg-gradient-to-r from-transparent via-[#C9A84C]/50 to-transparent my-10",
+    "step_label": "text-[#C9A84C] font-heading text-xl italic mb-4 flex items-center gap-4"
+  },
+  "animations": {
+    "fade_in": "animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out",
+    "animated_border": "absolute inset-0 rounded-xl border border-transparent [background:linear-gradient(45deg,transparent,rgba(157,111,232,0.3),transparent)_border-box] [mask-composite:exclude] animate-[spin_4s_linear_infinite]"
+  },
+  "visual_enhancers": {
+    "background_base": "bg-[#080810] min-h-screen text-[#EDE8F5] relative overflow-hidden",
+    "radial_glow": "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#6C3FC5]/15 rounded-full blur-[120px] pointer-events-none z-0",
+    "dot_grid": "fixed inset-0 bg-[radial-gradient(#EDE8F5_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none z-0"
+  },
+  "instructions_to_main_agent": [
+    "Use Tailwind CSS for styling. Add custom fonts (Playfair Display, Inter, DM Mono) via Google Fonts.",
+    "Apply the global background using `background_base`, `radial_glow`, and `dot_grid` elements behind the main content (ensure they have z-0 while content has z-10).",
+    "Ensure the layout is centered with a max-width of 820px, utilizing generous padding.",
+    "Form Elements: Customize Shadcn UI components. Use near-black background and thin purple borders glowing on focus for Textarea and Select.",
+    "Main Card: Wrap the core application in the `main_card` surface style for a dark glassmorphism effect.",
+    "Buttons: All primary action buttons must be pill-shaped (`rounded-full`) and include the gold shimmer hover effect (`button_shimmer`).",
+    "Results Section: Use `DM Mono` for prompt outputs. Implement the subtle `fade_in` animation.",
+    "Steps: Separate logic sections with the gold `separator` and precede them with `step_label` (e.g., 'I. Ideation', 'II. Refinement').",
+    "Include standard Lucide React icons where necessary.",
+    "CRITICAL: Always include `data-testid` attributes on all interactive elements (buttons, inputs, dropdowns)."
+  ]
+}
